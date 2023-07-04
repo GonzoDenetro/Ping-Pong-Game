@@ -32,6 +32,18 @@ class Paddle:
                 print("abajao")
                 
 
+class Ball:
+    def __init__(self, x, y, radius):
+        self.x = x
+        self.y = y
+        self.radius = radius
+        self.x_velocity = 5
+        self.y_velocity = 0
+    
+    def draw(self, screen):
+        pygame.draw.circle(screen, [255, 255, 255], [self.x, self.y], self.radius)
+
+
 def draw_game(screen, player1, player2, width, height):
     screen.fill([0, 0, 0])
     player1.draw(screen)
