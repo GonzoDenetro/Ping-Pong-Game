@@ -37,7 +37,8 @@ class Ball:
         self.x = x
         self.y = y
         self.radius = radius
-        self.x_velocity = 5
+        self.max_velocity = 5
+        self.x_velocity = self.max_velocity
         self.y_velocity = 0
     
     def draw(self, screen):
@@ -46,6 +47,7 @@ class Ball:
     def movement(self):
         #Para mover la pelota va a ser en base en que parte de la raqueta haya tocado la pelota
         self.x += self.x_velocity
+        self.y += self.y_velocity
 
 
 def draw_game(screen, player1, player2, ball, width, height):
@@ -76,12 +78,27 @@ def handle_collision(ball, left_paddle, right_paddle, height):
         if ball.y >= left_paddle.y and ball.y <= left_paddle.y + left_paddle.height: #Checamos colisione en "y"
             if ball.x - ball.radius <= left_paddle.x + left_paddle.width:
                 ball.x_velocity *= -1
+                
+                #Velocity for y axis
+                paddle_middle_y = left_paddle.y + (left_paddle.height // 2) #Obtenemos la coordenada donde esta el medio de la raqueta
+                difference_in_y = paddle_middle_y - ball.y #Checamos la distancia que hay entre la pelota y el medio de la raqueta
+                reduction_factor = (left_paddle.height // 2) / ball.max_velocity
+                velocity_for_y = difference_in_y // reduction_factor #Obtenemos la velcoidad para "y"
+                ball.y_velocity = velocity_for_y * -1
     
     #RIGHT SIDE
     else:
         if ball.y >= right_paddle.y and ball.y <= right_paddle.y + right_paddle.height:
             if ball.x + ball.radius >= right_paddle.x:
                 ball.x_velocity *= -1
+                
+                #Velocity for y axis
+                paddle_middle_y = right_paddle.y + (right_paddle.height // 2) #Obtenemos la coordenada donde esta el medio de la raqueta
+                difference_in_y = paddle_middle_y - ball.y #Checamos la distancia que hay entre la pelota y el medio de la raqueta
+                reduction_factor = (right_paddle.height // 2) / ball.max_velocity
+                velocity_for_y = difference_in_y // reduction_factor #Obtenemos la velcoidad para "y"
+                ball.y_velocity = velocity_for_y * -1
+                
                 print("plank right")
     
     print(f'x velocity: {ball.x_velocity}, x: {ball.x}')
