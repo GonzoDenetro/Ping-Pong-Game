@@ -50,8 +50,16 @@ class Ball:
         self.y += self.y_velocity
 
 
-def draw_game(screen, player1, player2, ball, width, height):
+def draw_score(screen, player_score, x):
+    font = pygame.font.SysFont("comicsans", 50)
+    score = font.render(str(player_score), True, (255, 255, 255))
+    screen.blit(score, (x, 20))
+
+def draw_game(screen, player1, player2, ball, width, height, score_player1, score_player2):
     screen.fill([0, 0, 0])
+    draw_score(screen, score_player1, width//4 - 25)
+    draw_score(screen, score_player2, width * (3/4) - 25)
+    
     player1.draw(screen)
     player2.draw(screen)
     
@@ -121,6 +129,9 @@ def run():
     
     ball = Ball(screen_width//2, screen_height//2, 7)
     
+    left_score = 0
+    right_score = 0
+    
     running = True
     while running:
         
@@ -135,8 +146,14 @@ def run():
         ball.movement()
         
         handle_collision(ball, player1, player2, screen_height)
+    
+        if ball.x < 0:
+            right_score += 1
+        elif ball.x > screen_width:
+            left_score += 1
+            
         
-        draw_game(screen, player1, player2, ball, screen_width, screen_height)
+        draw_game(screen, player1, player2, ball, screen_width, screen_height, left_score, right_score)
         
         for event in pygame.event.get():
             if event.type ==  pygame.QUIT:
