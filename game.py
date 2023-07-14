@@ -34,8 +34,8 @@ class Paddle:
 
 class Ball:
     def __init__(self, x, y, radius):
-        self.x = x
-        self.y = y
+        self.x = self.original_x = x
+        self.y = self.original_y = y
         self.radius = radius
         self.max_velocity = 5
         self.x_velocity = self.max_velocity
@@ -48,6 +48,12 @@ class Ball:
         #Para mover la pelota va a ser en base en que parte de la raqueta haya tocado la pelota
         self.x += self.x_velocity
         self.y += self.y_velocity
+        
+    def reset(self):
+        self.x = self.original_x
+        self.y = self.original_y
+        self.y_velocity = 0
+        self.x_velocity *= -1 
 
 
 def draw_score(screen, player_score, x):
@@ -149,8 +155,10 @@ def run():
     
         if ball.x < 0:
             right_score += 1
+            ball.reset()
         elif ball.x > screen_width:
             left_score += 1
+            ball.reset()
             
         
         draw_game(screen, player1, player2, ball, screen_width, screen_height, left_score, right_score)
