@@ -140,6 +140,8 @@ def run():
     
     left_score = 0
     right_score = 0
+    winnig_score = 10
+    game_over = False
     
     running = True
     while running:
@@ -167,6 +169,26 @@ def run():
             player1.reset()
             player2.reset()
             
+        if left_score >= winnig_score:
+            game_over = True
+            win_text = "Left side WIN!"
+        elif right_score >= winnig_score:
+            game_over = True
+            win_text = "Right side WIN!"
+        
+        if game_over:
+            font = pygame.font.SysFont("comicsans", 50)
+            text = font.render(str(win_text), True, (255, 255, 255))
+            screen.blit(text, (screen_width//2 - text.get_width()//2, screen_height//2 - text.get_height()//2))
+            pygame.display.update()
+            pygame.time.delay(5000)
+            ball.reset()
+            player1.reset()
+            player2.reset()
+            left_score = 0
+            right_score = 0
+            game_over = False
+    
         
         draw_game(screen, player1, player2, ball, screen_width, screen_height, left_score, right_score)
         
