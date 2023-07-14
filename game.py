@@ -5,7 +5,7 @@ pygame.init()
 class Paddle:
     def __init__(self, x, y, width, height):
         self.x = x
-        self.y = y
+        self.y = self.original_y = y
         self.width = width
         self.height = height
         self.speed = 5
@@ -30,6 +30,9 @@ class Paddle:
             elif userInput[pygame.K_s] and self.y + self.height < 495:
                 self.y += self.speed
                 print("abajao")
+    
+    def reset(self):
+        self.y = self.original_y
                 
 
 class Ball:
@@ -156,9 +159,13 @@ def run():
         if ball.x < 0:
             right_score += 1
             ball.reset()
+            player1.reset()
+            player2.reset()
         elif ball.x > screen_width:
             left_score += 1
             ball.reset()
+            player1.reset()
+            player2.reset()
             
         
         draw_game(screen, player1, player2, ball, screen_width, screen_height, left_score, right_score)
